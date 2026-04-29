@@ -4,26 +4,29 @@
 using namespace std;
 
 int solution(string s) {
-    string answer = "";
+    string result = ""; 
+    string tmp = "";    
     
-    for (int i = 0; i < s.length(); ) {
-        if (s[i] >= '0' && s[i] <= '9') {
-            answer += s[i]; 
-            i++; 
+    for(int i = 0; i < s.size(); i++){
+        if(s[i] >= '0' && s[i] <= '9') { 
+            result += s[i];
         } 
         else {
-            if (s.substr(i, 4) == "zero") { answer += '0'; i += 4; }
-            else if (s.substr(i, 3) == "one") { answer += '1'; i += 3; }
-            else if (s.substr(i, 3) == "two") { answer += '2'; i += 3; }
-            else if (s.substr(i, 5) == "three") { answer += '3'; i += 5; }
-            else if (s.substr(i, 4) == "four") { answer += '4'; i += 4; }
-            else if (s.substr(i, 4) == "five") { answer += '5'; i += 4; }
-            else if (s.substr(i, 3) == "six") { answer += '6'; i += 3; }
-            else if (s.substr(i, 5) == "seven") { answer += '7'; i += 5; }
-            else if (s.substr(i, 5) == "eight") { answer += '8'; i += 5; }
-            else if (s.substr(i, 4) == "nine") { answer += '9'; i += 4; }
+            tmp += s[i];
+            
+            if(tmp == "zero") { result += '0'; tmp = ""; }
+            else if(tmp == "one") { result += '1'; tmp = ""; }
+            else if(tmp == "two") { result += '2'; tmp = ""; }
+            else if(tmp == "three") { result += '3'; tmp = ""; }
+            else if(tmp == "four") { result += '4'; tmp = ""; }
+            else if(tmp == "five") { result += '5'; tmp = ""; }
+            else if(tmp == "six") { result += '6'; tmp = ""; }
+            else if(tmp == "seven") { result += '7'; tmp = ""; }
+            else if(tmp == "eight") { result += '8'; tmp = ""; }
+            else if(tmp == "nine") { result += '9'; tmp = ""; }
         }
     }
     
-    return stoi(answer); 
+    
+    return stoi(result);
 }
