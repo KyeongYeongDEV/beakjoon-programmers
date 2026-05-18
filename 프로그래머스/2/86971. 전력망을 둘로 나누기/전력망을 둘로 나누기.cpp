@@ -1,12 +1,14 @@
 #include <string>
 #include <vector>
-#include <cmath>
-#include <algorithm>
 #include <queue>
+#include <algorithm>
+#include <cmath>
 using namespace std;
 
-// 하나의 서브트리에 속한 노드의 개수를 세는 BFS 함수
-int get_tree_size(int start, int n, const vector<vector<int> >& adj, int v1, int v2) {
+ // abs()// 절대값
+// sqrt() // 제곱근
+
+int bfs(int start, int n, vector<vector<int>>& graph, int v1, int v2)  {
     vector<bool> visited(n + 1, false);
     queue<int> q;
     
@@ -17,10 +19,9 @@ int get_tree_size(int start, int n, const vector<vector<int> >& adj, int v1, int
     while(!q.empty()) {
         int cur = q.front();
         q.pop();
-        count++; // 방문한 노드 개수 증가
+        count++;
         
-        for(int next : adj[cur]) {
-            // 현재 끊어버린 간선 이라면 지나가지 않고 패스
+        for(int next : graph[cur]) {
             if((cur == v1 && next == v2) || (cur == v2 && next == v1)) continue;
             
             if(!visited[next]){
@@ -33,28 +34,32 @@ int get_tree_size(int start, int n, const vector<vector<int> >& adj, int v1, int
     return count;
 }
 
+
 int solution(int n, vector<vector<int>> wires) {
     int answer = n;
     
-    // 인접 리스트 생성
-    vector<vector<int> > adj(n+1);
-    for(auto& wire : wires) {
-        adj[wire[0]].push_back(wire[1]);
-        adj[wire[1]].push_back(wire[0]);
-    }
+    vector<vector<int>> graph(n+1);
     
-    // 모든 간선을 하니씩 무시하며 완전 탐색
-    for(auto& wire  : wires) {
+    // 그래프 그리기
+    for(auto& wire : wires) {
         int v1 = wire[0];
         int v2 = wire[1];
         
-        int sub_tree_size = get_tree_size(v1, n, adj, v1, v2);
-        int other_tree_size = n - sub_tree_size;
-        
-        int diff = abs(sub_tree_size - other_tree_size);
-        answer = min(answer, diff);
+        graph[v1].push_back(v2);
+        graph[v2].push_back(v1);
     }
     
+    for(auto& wire : wires) {
+        int v1 = wire[0];
+        int v2 = wire[1];
+        
+        int tree1 = bfs(v1, n, graph,v1,v2);
+        int tree2 = n - tree1;
+        
+        int result = abs(tree1 - tree2);
+        
+        answer = min(answer, result);
+    }
     
     return answer;
 }
